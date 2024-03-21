@@ -52,6 +52,9 @@ class Operation():
 
 
 def main():
+    """
+        Main function
+    """
     # 1. interpretazione argomenti da linea di comando
     parser = argparse.ArgumentParser(
         prog="isa",
