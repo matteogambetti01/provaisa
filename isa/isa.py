@@ -83,7 +83,6 @@ def main():
 
     arguments = parser.parse_args()
     logging.debug(arguments.predicted)
-    #print(arguments.predicted)
     logging.debug(arguments.expected)
     #print(arguments.expected)
     logging.debug(arguments.metrics)
