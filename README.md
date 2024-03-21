@@ -1,3 +1,4 @@
+#ISA
 isa è un'applicazione da linea di comando che, date due liste di numeri calcola alcune metriche:
 - MAE (mean absolute error)
 - MSE (mean squared error)
