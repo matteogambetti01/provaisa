@@ -57,7 +57,6 @@ def main():
         prog="isa",
         description="Computes error metrics"
     )
-    # $ isa --predicted 1 2 3 --expected 1 2 4 --metrics MAE
 
     parser.add_argument("--predicted",
         nargs='+',
