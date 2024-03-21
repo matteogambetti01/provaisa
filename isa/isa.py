@@ -22,7 +22,7 @@ class Operation():
 
     def _is_consistent(self) -> bool:
         """
-        Check the consistency of the list: they must have the same length
+        Check the consistency of the input list: they must have the same length
         """
         return len(self.predicted) == len(self.expected)
 
