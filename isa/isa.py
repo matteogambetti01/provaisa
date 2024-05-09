@@ -17,8 +17,7 @@ class Operation():
 
         if not self._is_consistent():
             #print("Predicted and expected must have the same length")
-            logging.critical("Predicted and expected must have the same length")
-            sys.exit()
+            raise ValueError("Predicted and expected must have the same length")
 
     def _is_consistent(self) -> bool:
         """
