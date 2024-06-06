@@ -1,6 +1,7 @@
 import argparse
 import sys
 import logging
+import math
 
 class Operation():
     """
@@ -27,16 +28,28 @@ class Operation():
 
     def _mae(self) -> float:
         """
-        Compute the MAE metric
+        Computes the MAE metric
         """
         result: float = 0
-        for i in range(0, len(self.predicted)):
-            result += abs(self.predicted[i] - self.expected[i])
+
+        fn = lambda p,e : abs(p, e)
+        result = sum(list(map(fn, self.predicted, self.expected)))
+        # le due righe sopra sono equivalenti a quelle commentate
+        #for x1,x2 in zip(self.predicted, self.expected):
+            #result += abs(x1 - x2)
         return result/len(self.predicted)
 
     def _mse(self) -> float:
-        # TODO
-        return -1
+        """
+        Computes the MSE metric
+        """
+        result: float = 0
+        for x1,x2 in zip(self.predicted, self.expected):
+            result += abs(x1 - x2) **2
+        return result/len(self.predicted)
+    
+    def _rmse(self) -> float:
+        return math.sqrt(self._mse())
 
     def compute_metrics(self) -> float:
         """
@@ -46,15 +59,15 @@ class Operation():
             return self._mae()
         elif self.metrics == "MSE":
             return self._mse()
+        elif self.metrics == "RMSE":
+            return self._rmse()
         else:
             return -1
 
-
-def main():
+def setup_parser() -> argparse.Namespace:
     """
-        Main function
+    Parses the arguments
     """
-    # 1. interpretazione argomenti da linea di comando
     parser = argparse.ArgumentParser(
         prog="isa",
         description="Computes error metrics"
@@ -78,20 +91,25 @@ def main():
         type=str,
         required=True,
         help="Metrics to compute",
-        choices=["MAE","MSE"]
+        choices=["MAE","MSE", "RMSE"]
     )
+    return parser.parse_args()
+
+def main(arguments):
+    """
+        Main function
+    """
+    # 1. interpretazione argomenti da linea di comando
 
     logging.basicConfig(level=logging.WARNING)
-
-    arguments = parser.parse_args()
     logging.debug(arguments.predicted)
     logging.debug(arguments.expected)
     logging.debug(arguments.metrics)
 
     solver = Operation(arguments.predicted, arguments.expected, arguments.metrics)
-    result = solver.compute_metrics()
-    print(f"Result: {result}")
+    return solver.compute_metrics()
 
 
 if __name__ == "__main__":
-    main()
+    result = main(setup_parser())
+    print(f"Result: {result}")
